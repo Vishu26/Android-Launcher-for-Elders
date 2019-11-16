@@ -54,7 +54,7 @@ public class addContact extends AppCompatActivity {
         final Button button = findViewById(R.id.addContact);
         final Button cam = findViewById(R.id.camera);
         final Button heart = findViewById(R.id.heart);
-        String[] items = new String[]{"Mother", "Father", "Son", "Daughter", "Friend", "Wife", "Husband", "Sister", "Brother"};
+        String[] items = new String[]{"Mother", "Father", "Son", "Daughter", "Friend", "Wife", "Husband", "Sister", "Brother", "Carpenter", "Doctor", "Nurse", "Plumber", "Electrician"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, items);
         s.setAdapter(adapter);
 

@@ -135,6 +135,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        View utilities = findViewById(R.id.rectangle_10);
+        utilities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, contactsList.class);
+                myIntent.putExtra("Utilities", 1);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
+
+
     }
 
     private void initializeSpeechRecognizer() {
@@ -247,8 +259,24 @@ public class MainActivity extends AppCompatActivity {
                 String str = result_message.substring(result_message.lastIndexOf(" ")+1);
                 Cursor c = databaseHelper.searchWithName(str);
                 if(c.getCount()==0){
-                    speak("Unable to find your "+ str);
-                    textView.setText("");
+                    Cursor c1 = databaseHelper.searchWithRelation(str);
+                    if(c1.getCount()==0){
+                        speak("Unable to find your "+ str);
+                        textView.setText("");
+                    }
+                    else if(c1.getCount()==1){
+                        c1.moveToFirst();
+                        String Phone = c1.getString(2);
+                        Log.i("Phone", Phone);
+                        callPhone(Phone);
+                    }
+                    else{
+                        Intent myIntent = new Intent(MainActivity.this, contactsList.class);
+                        myIntent.putExtra("Relation",str);
+                        myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivityIfNeeded(myIntent, 0);
+                    }
+
                 }
                 else if(c.getCount()==1){
                     c.moveToFirst();

@@ -179,4 +179,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_FAV, "ID = ?", new String[] {String.valueOf(id)});
     }
 
+    public Cursor getUtilities(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.i("sql", "SELECT * FROM "+TABLE_NAME+" WHERE LOWER("+COL3+") IN ('Carpenter', 'Doctor', 'Nurse', 'Plumber', 'Electrician')");
+        return db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+COL3+" IN ('Carpenter', 'Doctor', 'Nurse', 'Plumber', 'Electrician')",null);
+    }
+
 }

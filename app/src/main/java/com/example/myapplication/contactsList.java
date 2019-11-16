@@ -28,7 +28,7 @@ public class contactsList extends AppCompatActivity {
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
-    ArrayList<DataModel> data, arrayList;
+    ArrayList<DataModel> data, arrayList, univList;
     CustomAdapter adapter;
     DatabaseHelper databaseHelper;
     EditText search;
@@ -38,6 +38,48 @@ public class contactsList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts_list);
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+        data = new ArrayList<>();
+        arrayList = new ArrayList<>();
+        univList = new ArrayList<>();
+        layoutManager = new LinearLayoutManager(this);
+        adapter = new CustomAdapter(getApplicationContext(), data, contactsList.this);
+        addUnivList();
+        arrayList.addAll(univList);
+        recyclerView = findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            String str = extras.getString("Relation");
+            if(str!=null) {
+                search.setText(str);
+                search.clearFocus();
+                filter(str);
+                //getIntent().removeExtra("Relation");
+            }
+            else{
+                data.clear();
+                Cursor c = databaseHelper.getUtilities();
+                while(c.moveToNext()){
+                    data.add(new DataModel(
+                            c.getString(1),//name
+                            c.getString(2),//phone number
+                            c.getString(3),//device
+                            c.getString(4) //email
+                    ));
+                }
+                Log.i("g", data.toString());
+                arrayList.clear();
+                arrayList.addAll(data);
+                adapter.notifyDataSetChanged();
+                //getIntent().removeExtra("Utilities");
+            }
+        }
+
 
         View addContact = findViewById(R.id.rectangle_5);
         addContact.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +100,7 @@ public class contactsList extends AppCompatActivity {
                 startActivityIfNeeded(myIntent, 0);
             }
         });
-        updateList();
+        //updateList();
 
         View favList = findViewById(R.id.rectangle_3);
         favList.setOnClickListener(new View.OnClickListener() {
@@ -69,42 +111,6 @@ public class contactsList extends AppCompatActivity {
                 startActivityIfNeeded(myIntent, 0);
             }
         });
-
-
-
-    }
-    public void focusSearch(View v){
-        EditText e = findViewById(R.id.search);
-        e.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(e, InputMethodManager.SHOW_IMPLICIT);
-    }
-
-    public void updateList(){
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        data = new ArrayList<>();
-        databaseHelper = new DatabaseHelper(getApplicationContext());
-        Cursor cursor = databaseHelper.getAllContacts();
-
-        while(cursor.moveToNext()){
-            data.add(new DataModel(
-                    cursor.getString(1),//name
-                    cursor.getString(2),//phone number
-                    cursor.getString(3),//device
-                    cursor.getString(4) //email
-            ));
-        }
-        arrayList = new ArrayList();
-        arrayList.addAll(data);
-        Collections.sort(data, new CustomComparator());
-        adapter = new CustomAdapter(getApplicationContext(), data, contactsList.this);
-        recyclerView.setAdapter(adapter);
 
         search = findViewById(R.id.search);
         search.addTextChangedListener(new TextWatcher() {
@@ -127,10 +133,39 @@ public class contactsList extends AppCompatActivity {
 
     }
 
+    public void addUnivList(){
+        Cursor cursor = databaseHelper.getAllContacts();
+
+        while(cursor.moveToNext()){
+            univList.add(new DataModel(
+                    cursor.getString(1),//name
+                    cursor.getString(2),//phone number
+                    cursor.getString(3),//device
+                    cursor.getString(4) //email
+            ));
+        }
+    }
+
+    public void focusSearch(View v){
+        EditText e = findViewById(R.id.search);
+        e.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(e, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public void updateList(){
+
+        data.clear();
+        data.addAll(arrayList);
+        Collections.sort(data, new CustomComparator());
+        adapter.notifyDataSetChanged();
+
+    }
+
     public class CustomComparator implements Comparator<DataModel> {
         @Override
         public int compare(DataModel o1, DataModel o2) {
-            return o1.getName().compareTo(o2.getName());
+            return o1.getName().compareToIgnoreCase(o2.getName());
         }
     }
 
@@ -138,33 +173,26 @@ public class contactsList extends AppCompatActivity {
         charText = charText.toLowerCase(Locale.getDefault());
         data.clear();
         if (charText.length() == 0) {
-            data.addAll(arrayList);
+            data.addAll(univList);
         }
         else
         {
-            for (DataModel wp : arrayList) {
+            for (DataModel wp : univList) {
                 if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText) || wp.getRelation().toLowerCase(Locale.getDefault()).contains(charText)) {
                     data.add(wp);
                 }
             }
         }
+        arrayList.clear();
+        arrayList.addAll(data);
         Log.i("list", arrayList.toString());
+        Collections.sort(data, new CustomComparator());
         adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            String str = extras.getString("Relation");
-            search.setText(str);
-            search.clearFocus();
-            filter(str);
-        }
-        else{
             updateList();
-        }
-
     }
 }
