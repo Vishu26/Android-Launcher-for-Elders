@@ -112,6 +112,27 @@ public class contactsList extends AppCompatActivity {
             }
         });
 
+        View utilities = findViewById(R.id.rectangle_10);
+        utilities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(contactsList.this, contactsList.class);
+                myIntent.putExtra("Utilities", 1);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
+
+        View emer = findViewById(R.id.rectangle_2);
+        emer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(contactsList.this, EmergencyContacts.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
+
         search = findViewById(R.id.search);
         search.addTextChangedListener(new TextWatcher() {
             @Override

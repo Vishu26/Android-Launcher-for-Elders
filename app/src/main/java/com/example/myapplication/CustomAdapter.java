@@ -81,16 +81,37 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         textViewName.setText(dataSet.get(listPosition).getName());
 
-        holder.textViewName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DataModel dm = dataSet.get(listPosition);
-                Intent i = new Intent(context, ViewContact.class);
-                i.putExtra("Obj", dm);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
-            }
-        });
+        if(!dataSet.get(listPosition).getRelation().equals("Emergency")) {
+            holder.textViewName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DataModel dm = dataSet.get(listPosition);
+                    Intent i = new Intent(context, ViewContact.class);
+                    i.putExtra("Obj", dm);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }
+            });
+        }
+        else{
+            holder.textViewName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DataModel dm = dataSet.get(listPosition);
+                    String str = dm.getPhone();
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    callIntent.setData(Uri.parse("tel:"+str));//change the number
+                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CALL_PHONE},1);
+                    }
+                    else
+                    {
+                        context.startActivity(callIntent);
+                    }
+                }
+            });
+        }
         holder.imageViewIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

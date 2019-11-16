@@ -146,6 +146,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        View emer = findViewById(R.id.rectangle_2);
+        emer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, EmergencyContacts.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
+
 
     }
 
