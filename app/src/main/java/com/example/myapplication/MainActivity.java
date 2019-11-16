@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     static int MAX_CHAR = 50;
     private TextView textView;
     private Constants constants;
+    private Animation shake;
     DatabaseHelper databaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         constants = new Constants();
         databaseHelper = new DatabaseHelper(getApplicationContext());
+        shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        shake.setRepeatCount(-1);
 
         fab = findViewById(R.id.button2);
         textView = findViewById(R.id.command);
@@ -75,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     // Permission has already been granted
+                    fab.startAnimation(shake);
                     Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                     intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                     intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,1);
@@ -157,12 +163,12 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onEndOfSpeech() {
-
+                    fab.clearAnimation();
                 }
 
                 @Override
                 public void onError(int error) {
-
+                    fab.clearAnimation();
                 }
 
                 @Override
@@ -173,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onPartialResults(Bundle partialResults) {
-
+                    fab.clearAnimation();
                 }
 
                 @Override
@@ -185,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processResult(String result_message) {
+        fab.clearAnimation();
         textView.setText("");
         textView.setText(result_message);
         result_message = result_message.toLowerCase();
