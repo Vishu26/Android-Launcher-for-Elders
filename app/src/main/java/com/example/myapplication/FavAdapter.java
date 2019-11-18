@@ -79,8 +79,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.MyViewHolder> {
         }
         else{
             Bitmap bitmap = BitmapFactory.decodeFile(dataSet.get(listPosition).getImage());
-            Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
-            imageView.setImageBitmap(b);
+            //Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
+            imageView.setImageBitmap(bitmap);
         }
 
 

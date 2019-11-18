@@ -52,34 +52,6 @@ public class contactsList extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            String str = extras.getString("Relation");
-            if(str!=null) {
-                search.setText(str);
-                search.clearFocus();
-                filter(str);
-                //getIntent().removeExtra("Relation");
-            }
-            else{
-                data.clear();
-                Cursor c = databaseHelper.getUtilities();
-                while(c.moveToNext()){
-                    data.add(new DataModel(
-                            c.getString(1),//name
-                            c.getString(2),//phone number
-                            c.getString(3),//device
-                            c.getString(4) //email
-                    ));
-                }
-                Log.i("g", data.toString());
-                arrayList.clear();
-                arrayList.addAll(data);
-                adapter.notifyDataSetChanged();
-                //getIntent().removeExtra("Utilities");
-            }
-        }
-
 
         View addContact = findViewById(R.id.rectangle_5);
         addContact.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +91,7 @@ public class contactsList extends AppCompatActivity {
                 Intent myIntent = new Intent(contactsList.this, contactsList.class);
                 myIntent.putExtra("Utilities", 1);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityIfNeeded(myIntent, 0);
             }
         });
@@ -214,6 +187,36 @@ public class contactsList extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            String str = extras.getString("Relation");
+            if(str!=null) {
+                search.setText(str);
+                search.clearFocus();
+                filter(str);
+                //getIntent().removeExtra("Relation");
+            }
+            else{
+                data.clear();
+                Cursor c = databaseHelper.getUtilities();
+                while(c.moveToNext()){
+                    data.add(new DataModel(
+                            c.getString(1),//name
+                            c.getString(2),//phone number
+                            c.getString(3),//device
+                            c.getString(4) //email
+                    ));
+                }
+                Log.i("g", data.toString());
+                arrayList.clear();
+                arrayList.addAll(data);
+                adapter.notifyDataSetChanged();
+                //getIntent().removeExtra("Utilities");
+            }
+        }
+        else{
+            Log.i("Here 1", "Here");
             updateList();
+        }
     }
 }

@@ -45,8 +45,8 @@ public class ViewContact extends AppCompatActivity {
         }
         else{
             Bitmap bitmap = BitmapFactory.decodeFile(dm.getImage());
-            Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
-            imageView.setImageBitmap(b);
+            //Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
+            imageView.setImageBitmap(bitmap);
         }
 
         final Contact c = new Contact(dm.getName(),dm.getPhone(),dm.getRelation(),dm.getImage());

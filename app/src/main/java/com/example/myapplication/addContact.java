@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -69,8 +70,8 @@ public class addContact extends AppCompatActivity {
             }
             else{
                 Bitmap bitmap = BitmapFactory.decodeFile(dm.getImage());
-                Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
-                im.setImageBitmap(b);
+                //Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
+                im.setImageBitmap(bitmap);
             }
             DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
             Contact contact = new Contact(name.getText().toString(),
@@ -247,17 +248,16 @@ public class addContact extends AppCompatActivity {
 
                     try {
                         Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+                        //ExifInterface exif = new ExifInterface(filePath);
                         ImageView im = findViewById(R.id.propic);
-                        Bitmap b = getCircularBitmapWithWhiteBorder(yourSelectedImage, 2);
-                        im.setImageBitmap(b);
+                        //Bitmap b = getCircularBitmapWithWhiteBorder(yourSelectedImage, 2);
+                        im.setImageBitmap(yourSelectedImage);
                         DbBitmapUtility db = new DbBitmapUtility();
                         image = filePath;
                     } catch (OutOfMemoryError e) {
 
                             Log.e("Error",e.toString());
                         }
-
-
                 }
         }
 

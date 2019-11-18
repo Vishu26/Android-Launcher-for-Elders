@@ -75,8 +75,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         }
         else{
             Bitmap bitmap = BitmapFactory.decodeFile(dataSet.get(listPosition).getImage());
-            Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
-            imageView.setImageBitmap(b);
+            //Bitmap b = getCircularBitmapWithWhiteBorder(bitmap, 2);
+            imageView.setImageBitmap(bitmap);
         }
 
         textViewName.setText(dataSet.get(listPosition).getName());

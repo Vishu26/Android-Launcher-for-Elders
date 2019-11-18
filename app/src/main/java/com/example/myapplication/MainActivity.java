@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(MainActivity.this, contactsList.class);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                //myIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityIfNeeded(myIntent, 0);
             }
         });

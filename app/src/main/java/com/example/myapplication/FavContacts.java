@@ -54,6 +54,7 @@ public class FavContacts extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(FavContacts.this, contactsList.class);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                //myIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityIfNeeded(myIntent, 0);
             }
         });
@@ -65,6 +66,7 @@ public class FavContacts extends AppCompatActivity {
                 Intent myIntent = new Intent(FavContacts.this, contactsList.class);
                 myIntent.putExtra("Utilities", 1);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityIfNeeded(myIntent, 0);
             }
         });
