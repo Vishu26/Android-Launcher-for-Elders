@@ -106,6 +106,16 @@ public class contactsList extends AppCompatActivity {
             }
         });
 
+        View cab = findViewById(R.id.rectangle_9);
+        cab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(contactsList.this, Cab.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
+
         search = findViewById(R.id.search);
         search.addTextChangedListener(new TextWatcher() {
             @Override

@@ -81,6 +81,16 @@ public class FavContacts extends AppCompatActivity {
             }
         });
 
+        View cab = findViewById(R.id.rectangle_9);
+        cab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(FavContacts.this, Cab.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
+
         updateList();
     }
 

@@ -113,6 +113,16 @@ public class ViewContact extends AppCompatActivity {
             }
         });
 
+        View cab = findViewById(R.id.rectangle_9);
+        cab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ViewContact.this, Cab.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
+
 
         heart.setOnClickListener(new View.OnClickListener() {
             @Override

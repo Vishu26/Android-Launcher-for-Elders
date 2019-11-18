@@ -87,5 +87,15 @@ public class EmergencyContacts extends AppCompatActivity {
                 startActivityIfNeeded(myIntent, 0);
             }
         });
+
+        View cab = findViewById(R.id.rectangle_9);
+        cab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(EmergencyContacts.this, Cab.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(myIntent, 0);
+            }
+        });
     }
 }
