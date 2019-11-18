@@ -210,6 +210,7 @@
 
         <Spinner
             android:layout_height="30dp"
+            android:id="@+id/cab_list123"
             android:width="120dp"
             android:layout_row="1"
             android:layout_column="3"/>
@@ -469,9 +470,5 @@
                 android:layout_marginTop="3dp"/>
         </RelativeLayout>
     </RelativeLayout>
-
-
-
-
 
 </RelativeLayout>
