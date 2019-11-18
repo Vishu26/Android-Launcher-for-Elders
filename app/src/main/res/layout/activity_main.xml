@@ -143,7 +143,6 @@
             android:layout_centerVertical="true"/>
         </RelativeLayout>
 
-
     </RelativeLayout>
 
     <TextView
