@@ -69,7 +69,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         TextView textViewName = holder.textViewName;
         ImageView imageView = holder.imageViewIcon;
-        DbBitmapUtility db = new DbBitmapUtility();
         if(dataSet.get(listPosition).getImage()==null){
             imageView.setImageResource(R.drawable.ic_android);
         }
@@ -136,29 +135,4 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         return dataSet.size();
     }
 
-    public static Bitmap getCircularBitmapWithWhiteBorder(Bitmap bitmap,
-                                                          int borderWidth) {
-        if (bitmap == null || bitmap.isRecycled()) {
-            return null;
-        }
-
-        final int width = bitmap.getWidth() + borderWidth;
-        final int height = bitmap.getHeight() + borderWidth;
-
-        Bitmap canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setShader(shader);
-
-        Canvas canvas = new Canvas(canvasBitmap);
-        float radius = width > height ? ((float) height) / 2f : ((float) width) / 2f;
-        canvas.drawCircle(width / 2, height / 2, radius, paint);
-        paint.setShader(null);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLUE);
-        paint.setStrokeWidth(borderWidth);
-        canvas.drawCircle(width / 2, height / 2, radius - borderWidth / 2, paint);
-        return canvasBitmap;
-    }
 }
